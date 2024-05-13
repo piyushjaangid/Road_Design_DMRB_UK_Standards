@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Geometric Design App - DMRB UK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .output {
+            margin-top: 20px;
+        }
+        .formula, .result {
+            margin-bottom: 15px;
+        }
+        .drawing {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Road Geometric Design App - DMRB UK</h1>
+        
+        <div class="input-group">
+            <label for="roadType">Road Type</label>
+            <select id="roadType">
+                <option value="Motorway">Motorway</option>
+                <option value="Dual Carriageway">Dual Carriageway</option>
+                <option value="Single Carriageway">Single Carriageway</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="designSpeed">Design Speed (km/h)</label>
+            <input type="number" id="designSpeed" value="100" min="60" max="120">
+        </div>
+
+        <div class="input-group">
+            <label for="laneWidth">Lane Width (m)</label>
+            <input type="number" id="laneWidth" value="3.75" min="3.65" max="3.75" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label for="shoulderWidth">Shoulder Width (m)</label>
+            <input type="number" id="shoulderWidth" value="2.5" min="1.0" max="3.0" step="0.1">
+        </div>
+
+        <div class="input-group">
+            <label for="centralReserveWidth">Central Reserve Width (m)</label>
+            <input type="number" id="centralReserveWidth" value="3.0" min="1.2" max="4.5" step="0.1">
+        </div>
+
+        <div class="input-group">
+            <label for="vergeWidth">Verge Width (m)</label>
+            <input type="number" id="vergeWidth" value="2.0" min="1.0" max="3.0" step="0.1">
+        </div>
+
+        <div class="input-group">
+            <label for="footwayWidth">Footway/Cycleway Width (m)</label>
+            <input type="number" id="footwayWidth" value="2.5" min="2.0" max="3.0" step="0.1">
+        </div>
+
+        <div class="input-group">
+            <label for="minCurveRadius">Minimum Curve Radius (m)</label>
+            <input type="number" id="minCurveRadius" value="300" min="100">
+        </div>
+
+        <div class="input-group">
+            <label for="superelevation">Superelevation (%)</label>
+            <input type="number" id="superelevation" value="5" min="0" max="7" step="0.1">
+        </div>
+
+        <div class="input-group">
+            <label for="transitionCurveLength">Transition Curve Length (m)</label>
+            <input type="number" id="transitionCurveLength" value="50" min="0">
+        </div>
+
+        <div class="input-group">
+            <label for="maxGradient">Maximum Gradient (%)</label>
+            <input type="number" id="maxGradient" value="4" min="0" max="6" step="0.1">
+        </div>
+
+        <div class="input-group">
+            <label for="minVerticalCurveLength">Minimum Vertical Curve Length (m)</label>
+            <input type="number" id="minVerticalCurveLength" value="300" min="0">
+        </div>
+
+        <div class="input-group">
+            <label for="summitCurveLength">Summit Curve Length (m)</label>
+            <input type="number" id="summitCurveLength" value="400" min="0">
+        </div>
+
+        <div class="input-group">
+            <label for="valleyCurveLength">Valley Curve Length (m)</label>
+            <input type="number" id="valleyCurveLength" value="300" min="0">
+        </div>
+
+        <button onclick="calculate()">Calculate</button>
+
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            // Retrieve input values
+            const roadType = document.getElementById('roadType').value;
+            const designSpeed = parseFloat(document.getElementById('designSpeed').value);
+            const laneWidth = parseFloat(document.getElementById('laneWidth').value);
+            const shoulderWidth = parseFloat(document.getElementById('shoulderWidth').value);
+            const centralReserveWidth = parseFloat(document.getElementById('centralReserveWidth').value);
+            const vergeWidth = parseFloat(document.getElementById('vergeWidth').value);
+            const footwayWidth = parseFloat(document.getElementById('footwayWidth').value);
+            const minCurveRadius = parseFloat(document.getElementById('minCurveRadius').value);
+            const superelevation = parseFloat(document.getElementById('superelevation').value);
+            const transitionCurveLength = parseFloat(document.getElementById('transitionCurveLength').value);
+            const maxGradient = parseFloat(document.getElementById('maxGradient').value);
+            const minVerticalCurveLength = parseFloat(document.getElementById('minVerticalCurveLength').value);
+            const summitCurveLength = parseFloat(document.getElementById('summitCurveLength').value);
+            const valleyCurveLength = parseFloat(document.getElementById('valleyCurveLength').value);
+
+            // Calculations based on DMRB guidelines
+            let outputHtml = '<h2>Calculation Results</h2>';
+
+            // Example calculation for lane width
+            outputHtml += '<div class="formula"><strong>Lane Width Calculation:</strong><br>';
+            outputHtml += `Lane Width = ${laneWidth} m</div>`;
+
+            // Example calculation for minimum curve radius
+            outputHtml += '<div class="formula"><strong>Minimum Curve Radius Calculation:</strong><br>';
+            outputHtml += `Minimum Curve Radius = ${minCurveRadius} m</div>`;
+
+            // Additional calculations would go here
+
+            // Display results
+            document.getElementById('output').innerHTML = outputHtml;
+
+            // Draw road design
+            drawRoadDesign({
+                roadType, designSpeed, laneWidth, shoulderWidth, centralReserveWidth,
+                vergeWidth, footwayWidth, minCurveRadius, superelevation, transitionCurveLength,
+                maxGradient, minVerticalCurveLength, summitCurveLength, valleyCurveLength
+            });
+        }
+
+        function drawRoadDesign(params) {
+            const svgNamespace = "http://www.w3.org/2000/svg";
+            const width = 800;
+            const height = 600;
+            const svg = document.createElementNS(svgNamespace, "svg");
+            svg.setAttribute("width", width);
+            svg.setAttribute("height", height);
+            svg.setAttribute("class", "drawing");
+
+            // Draw the main carriageway
+            const carriagewayWidthHalf = params.laneWidth * 10;
+            const centralReserveWidthHalf = params.centralReserveWidth * 10 / 2;
+            const shoulderWidthHalf = params.shoulderWidth * 10;
+            
+            const carriageway = document.createElementNS(svgNamespace, "rect");
+            carriageway.setAttribute("x", width / 2 - carriagewayWidthHalf - centralReserveWidthHalf);
+            carriageway.setAttribute("y", height / 2 - 50);
+            carriageway.setAttribute("width", carriagewayWidthHalf * 2 + centralReserveWidthHalf * 2);
+            carriageway.setAttribute("height", 100);
+            carriageway.setAttribute("fill", "#cccccc");
+            svg.appendChild(carriageway);
+
+            // Draw the central reserve
+            const centralReserve = document.createElementNS(svgNamespace, "rect");
+            centralReserve.setAttribute("x", width / 2 - centralReserveWidthHalf);
+            centralReserve.setAttribute("y", height / 2 - 50);
+            centralReserve.setAttribute("width", centralReserveWidthHalf * 2);
+            centralReserve.setAttribute("height", 100);
+            centralReserve.setAttribute("fill", "#aaaaaa");
+            svg.appendChild(centralReserve);
+
+            // Draw the shoulders
+            const leftShoulder = document.createElementNS(svgNamespace, "rect");
+            leftShoulder.setAttribute("x", width / 2 - carriagewayWidthHalf - centralReserveWidthHalf - shoulderWidthHalf);
+            leftShoulder.setAttribute("y", height / 2 - 50);
+            leftShoulder.setAttribute("width", shoulderWidthHalf);
+            leftShoulder.setAttribute("height", 100);
+            leftShoulder.setAttribute("fill", "#999999");
+            svg.appendChild(leftShoulder);
+
+            const rightShoulder = document.createElementNS(svgNamespace, "rect");
+            rightShoulder.setAttribute("x", width / 2 + carriagewayWidthHalf + centralReserveWidthHalf);
+            rightShoulder.setAttribute("y", height / 2 - 50);
+            rightShoulder.setAttribute("width", shoulderWidthHalf);
+            rightShoulder.setAttribute("height", 100);
+            rightShoulder.setAttribute("fill", "#999999");
+            svg.appendChild(rightShoulder);
+
+            // Draw the verges
+            const leftVerge = document.createElementNS(svgNamespace, "rect");
+            leftVerge.setAttribute("x", width / 2 - carriagewayWidthHalf - centralReserveWidthHalf - shoulderWidthHalf - params.vergeWidth * 10);
+            leftVerge.setAttribute("y", height / 2 - 50);
+            leftVerge.setAttribute("width", params.vergeWidth * 10);
+            leftVerge.setAttribute("height", 100);
+            leftVerge.setAttribute("fill", "#888888");
+            svg.appendChild(leftVerge);
+
+            const rightVerge = document.createElementNS(svgNamespace, "rect");
+            rightVerge.setAttribute("x", width / 2 + carriagewayWidthHalf + centralReserveWidthHalf + shoulderWidthHalf);
+            rightVerge.setAttribute("y", height / 2 - 50);
+            rightVerge.setAttribute("width", params.vergeWidth * 10);
+            rightVerge.setAttribute("height", 100);
+            rightVerge.setAttribute("fill", "#888888");
+            svg.appendChild(rightVerge);
+
+            // Draw the footway/cycleway
+            const leftFootway = document.createElementNS(svgNamespace, "rect");
+            leftFootway.setAttribute("x", width / 2 - carriagewayWidthHalf - centralReserveWidthHalf - shoulderWidthHalf - params.vergeWidth * 10 - params.footwayWidth * 10);
+            leftFootway.setAttribute("y", height / 2 - 50);
+            leftFootway.setAttribute("width", params.footwayWidth * 10);
+            leftFootway.setAttribute("height", 100);
+            leftFootway.setAttribute("fill", "#777777");
+            svg.appendChild(leftFootway);
+
+            const rightFootway = document.createElementNS(svgNamespace, "rect");
+            rightFootway.setAttribute("x", width / 2 + carriagewayWidthHalf + centralReserveWidthHalf + shoulderWidthHalf + params.vergeWidth * 10);
+            rightFootway.setAttribute("y", height / 2 - 50);
+            rightFootway.setAttribute("width", params.footwayWidth * 10);
+            rightFootway.setAttribute("height", 100);
+            rightFootway.setAttribute("fill", "#777777");
+            svg.appendChild(rightFootway);
+
+            // Add annotations
+            const addText = (text, x, y) => {
+                const annotation = document.createElementNS(svgNamespace, "text");
+                annotation.setAttribute("x", x);
+                annotation.setAttribute("y", y);
+                annotation.setAttribute("fill", "black");
+                annotation.setAttribute("font-size", "14");
+                annotation.textContent = text;
+                svg.appendChild(annotation);
+            };
+
+            addText(`Lane Width: ${params.laneWidth} m`, width / 2 - carriagewayWidthHalf - centralReserveWidthHalf, height / 2 - 60);
+            addText(`Central Reserve Width: ${params.centralReserveWidth} m`, width / 2 - centralReserveWidthHalf, height / 2 - 60);
+            addText(`Left Shoulder Width: ${params.shoulderWidth} m`, width / 2 - carriagewayWidthHalf - centralReserveWidthHalf - shoulderWidthHalf, height / 2 - 60);
+            addText(`Right Shoulder Width: ${params.shoulderWidth} m`, width / 2 + carriagewayWidthHalf + centralReserveWidthHalf, height / 2 - 60);
+            addText(`Left Verge Width: ${params.vergeWidth} m`, width / 2 - carriagewayWidthHalf - centralReserveWidthHalf - shoulderWidthHalf - params.vergeWidth * 10, height / 2 - 60);
+            addText(`Right Verge Width: ${params.vergeWidth} m`, width / 2 + carriagewayWidthHalf + centralReserveWidthHalf + shoulderWidthHalf, height / 2 - 60);
+            addText(`Left Footway Width: ${params.footwayWidth} m`, width / 2 - carriagewayWidthHalf - centralReserveWidthHalf - shoulderWidthHalf - params.vergeWidth * 10 - params.footwayWidth * 10, height / 2 - 60);
+            addText(`Right Footway Width: ${params.footwayWidth} m`, width / 2 + carriagewayWidthHalf + centralReserveWidthHalf + shoulderWidthHalf + params.vergeWidth * 10, height / 2 - 60);
+
+            // Append the SVG to the output div
+            document.getElementById('output').appendChild(svg);
+        }
+    </script>
+</body>
+</html>
